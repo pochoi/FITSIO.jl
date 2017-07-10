@@ -4,7 +4,8 @@ using Compat
 @BinDeps.setup
 
 version = "3370"
-baseurl = "ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/"
+baseurl = "http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/"
+
 
 if is_unix()
     archivename = "cfitsio$(version).tar.gz"
