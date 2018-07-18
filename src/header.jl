@@ -40,15 +40,7 @@ end
 try_parse_hdrval(::Type{Float64}, s::Compat.ASCIIString) = tryparse(Float64, s)
 
 # hack for integers in Julia v0.3: tryparse(Int, s) not available in Compat.
-if VERSION > v"0.4.0-dev+3864"
-    try_parse_hdrval(::Type{Int}, s::Compat.ASCIIString) = tryparse(Int, s)
-else
-    try_parse_hdrval(::Type{Int}, s::Compat.ASCIIString) = try
-        Nullable(parseint(s))
-    catch e
-        Nullable{Int}()
-    end
-end
+try_parse_hdrval(::Type{Int}, s::Compat.ASCIIString) = tryparse(Int, s)
 
 # Try to parse the header value as any type
 function try_parse_hdrval(s::Compat.ASCIIString)
@@ -182,7 +174,7 @@ end
 # Write header to CHDU.
 # If `clean` is true, skip writing reserved header keywords.
 function fits_write_header(f::FITSFile, hdr::FITSHeader, clean::Bool=true)
-    indices = clean? reserved_key_indices(hdr): Int[]
+    indices = clean ? reserved_key_indices(hdr) : Int[]
     for i=1:length(hdr)
         if clean && in(i, indices)
             continue
